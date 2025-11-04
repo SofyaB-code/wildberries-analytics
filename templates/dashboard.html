@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Wildberries Analytics</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Wildberries Analytics</h1>
+  <table>
+    <tr><th>Артикул</th><th>Название</th><th>Остаток</th><th>Цена</th></tr>
+    {% for item in data %}
+      <tr>
+        <td>{{ item.nmId }}</td>
+        <td>{{ item.subject }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <canvas id="chart"></canvas>
+  <script>
+    const labels = {{ data|map(attribute='subject')|list }};
+    const values = {{ data|map(attribute='quantity')|list }};
+    new Chart(document.getElementById('chart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Остатки',
+          data: values,
+          backgroundColor: '#7e57c2'
+        }]
+      }
+    });
+  </script>
+</body>
+</html>
