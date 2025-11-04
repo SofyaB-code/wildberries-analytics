@@ -1,32 +1,18 @@
 const express = require("express");
-const fetch = require("node-fetch");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 
-// 🔑 вставь сюда свой API-токен
-const API_TOKEN = "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjUwOTA0djEiLCJ0eXAiOiJKV1QifQ.eyJhY2MiOjEsImVudCI6MSwiZXhwIjoxNzc4MDQzMjg3LCJpZCI6IjAxOWE0ZmNhLWUyYzEtN2MzYi1iMGJlLWNmNDFkOTgzMzA2YiIsImlpZCI6MjAxNTQ2MTksIm9pZCI6MjgyNzg0LCJzIjoxNjEyNiwic2lkIjoiNzZlZmM0NjktYTgxNS00NGEyLWIzMjEtNzMzNzI5ZjY0NjBlIiwidCI6ZmFsc2UsInVpZCI6MjAxNTQ2MTl9.8OIgbWiq044kkUgCWmvIaY9eg9j2qHxXSbsXwRWeQcUCnh4RcMSxVEkK7E08WI8XL4WPMkwC3bgoc_s1B03TSA";
+// демо-данные вместо настоящего API
+const demoData = [
+  { nmId: 1001, subject: "Футболка мужская", quantity: 134, price: 990 },
+  { nmId: 1002, subject: "Платье летнее", quantity: 52, price: 2590 },
+  { nmId: 1003, subject: "Кроссовки женские", quantity: 89, price: 5490 },
+  { nmId: 1004, subject: "Джинсы", quantity: 210, price: 3790 },
+  { nmId: 1005, subject: "Рюкзак городской", quantity: 47, price: 2990 }
+];
 
-app.get("/api/stocks", async (req, res) => {
-  try {
-    const r = await fetch("https://statistics-api.wildberries.ru/api/v1/supplier/stocks", {
-      headers: { Authorization: API_TOKEN },
-    });
+app.get("/api/stocks", (req, res) => res.json(demoData));
 
-    if (!r.ok) {
-      const text = await r.text();
-      console.error("Ошибка WB API:", text);
-      return res.status(r.status).send(text);
-    }
-
-    const data = await r.json();
-    res.json(data);
-  } catch (err) {
-    console.error("Ошибка сервера:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.listen(PORT, () => console.log(`✅ Сервер запущен на порту ${PORT}`));
+app.listen(PORT, () => console.log(` Demo-server running on ${PORT}`));
